@@ -1,0 +1,29 @@
+apply plugin: "com.android.library"
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion 30
+    defaultConfig {
+        minSdkVersion 21
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion '1.1.1'
+    }
+    buildFeatures {
+        compose true
+    }
+}
+
+dependencies {
+    implementation libs.androidx.compose.ui
+    implementation libs.androidx.compose.material
+    implementation 'androidx.navigation:navigation-common-ktx:2.4.2'
+}

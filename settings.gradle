@@ -1,2 +1,9 @@
+rootProject.name = "Note App"
+
 include ':app'
-rootProject.name = "NoteApp"
+include ':features:ui-commons'
+include ':domain'
+include ':commons'
+include ':store:entity'
+include ':store:specification'
+include ':store:implementation'

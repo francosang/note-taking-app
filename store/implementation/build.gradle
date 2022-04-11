@@ -1,0 +1,42 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion 30
+    defaultConfig {
+        minSdkVersion 21
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+        kotlinOptions.moduleName = "com.task.noteapp.store.implementation"
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    compileOptions {
+        coreLibraryDesugaringEnabled true
+    }
+}
+
+dependencies {
+    implementation project(path: ':domain')
+    implementation project(path: ':store:entity')
+    implementation project(path: ':store:specification')
+
+    coreLibraryDesugaring libs.android.desugar
+
+    implementation libs.kotlinx.coroutines.core
+    implementation libs.javax.inject
+
+    // Room
+    implementation libs.androidx.room
+    implementation libs.androidx.room.runtime
+    kapt libs.androidx.room.compiler
+}
