@@ -41,6 +41,8 @@ android {
 }
 
 dependencies {
+    implementation project(path: ':features:note-list:ui')
+    implementation project(path: ':features:note-detail:ui')
     implementation project(path: ':features:ui-commons')
     implementation project(path: ':store:implementation')
     implementation project(path: ':commons')

@@ -1,11 +1,14 @@
 package com.task.noteapp.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 
 private val LightThemeColors = lightColors(
@@ -30,7 +33,7 @@ private val DarkThemeColors = darkColors(
 )
 
 @Composable
-fun NoteappTheme(
+fun NoteAppTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
@@ -39,7 +42,10 @@ fun NoteappTheme(
         typography = NoteAppTypography,
         shapes = NoteAppShapes,
     ) {
-        Surface(content = content)
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            content = content
+        )
     }
 }
 

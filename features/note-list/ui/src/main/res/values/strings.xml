@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notes_empty_message">Add your first note to see it here</string>
+    <string name="notes_error_message">There was an problem loading your notes. Please retry</string>
+    <string name="message_retry">Retry</string>
+</resources>

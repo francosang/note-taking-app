@@ -1,0 +1,60 @@
+apply plugin: "com.android.library"
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'dagger.hilt.android.plugin'
+
+android {
+    compileSdkVersion 30
+    defaultConfig {
+        minSdkVersion 21
+        vectorDrawables.useSupportLibrary = true
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+        kotlinOptions.moduleName = "com.task.noteapp.features.note_list.ui"
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    buildFeatures {
+        compose true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion '1.1.1'
+    }
+    compileOptions {
+        coreLibraryDesugaringEnabled true
+    }
+}
+
+dependencies {
+    implementation project(path: ':domain')
+    implementation project(path: ':commons')
+    implementation project(path: ':features:note-list:use-case')
+    implementation project(path: ':features:note-commons')
+    implementation project(path: ':features:use-case-commons')
+    implementation project(path: ':features:ui-commons')
+
+    coreLibraryDesugaring libs.android.desugar
+
+    implementation libs.androidx.compose.ui
+    implementation libs.androidx.compose.livedata
+    implementation libs.androidx.compose.material
+    implementation libs.androidx.compose.viewmodel
+    implementation libs.androidx.compose.navigation.hilt
+    implementation libs.google.accompanist.navigation.animation
+    implementation libs.androidx.lifecycle.runtime
+    implementation libs.coil
+
+    testImplementation libs.mockk
+    testImplementation libs.junit
+    testImplementation libs.androidx.test.core
+    testImplementation libs.androidx.test.runner
+    testImplementation libs.kotlinx.coroutines.test
+    testImplementation libs.androidx.arch.core.testing
+
+    implementation libs.javax.inject
+    implementation libs.google.hilt.android
+    kapt libs.google.hilt.compiler
+}

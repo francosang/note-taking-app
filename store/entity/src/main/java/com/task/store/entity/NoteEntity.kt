@@ -28,7 +28,7 @@ fun NoteEntity.toDomain() = Note(
 )
 
 fun Note.toEntity() = NoteEntity(
-    id = this.id,
+    id = this.id ?: 0, // in our Room setup, 0 means not saved
     title = this.title,
     content = this.content,
     image = this.image,

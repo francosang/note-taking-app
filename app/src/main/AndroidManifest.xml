@@ -12,6 +12,7 @@
         android:theme="@style/Theme.AppCompat.NoActionBar"
         android:supportsRtl="true">
         <activity android:name="com.task.noteapp.ui.main.MainActivity"
+            android:windowSoftInputMode="adjustResize"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

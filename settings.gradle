@@ -1,6 +1,12 @@
 rootProject.name = "Note App"
 
 include ':app'
+include ':features:note-list:ui'
+include ':features:note-list:use-case'
+include ':features:note-detail:ui'
+include ':features:note-detail:use-case'
+include ':features:note-commons'
+include ':features:use-case-commons'
 include ':features:ui-commons'
 include ':domain'
 include ':commons'
