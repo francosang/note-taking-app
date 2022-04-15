@@ -1,23 +1,36 @@
-apply plugin: 'kotlin'
+apply plugin: "com.android.library"
+apply plugin: 'kotlin-android'
 
-compileKotlin {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
-
+android {
+    compileSdkVersion 30
+    defaultConfig {
+        minSdkVersion 21
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+        kotlinOptions.moduleName = "com.task.noteapp.features.note_details.use_case"
+    }
     kotlinOptions {
-        jvmTarget = "1.8"
-        moduleName = "com.task.noteapp.note-detail.use-case"
+        jvmTarget = '1.8'
+    }
+    compileOptions {
+        coreLibraryDesugaringEnabled true
     }
 }
 
 dependencies {
-    implementation project(path: ':commons')
-    implementation project(path: ':domain')
+    implementation project(path: ':features:note-commons')
     implementation project(path: ':features:use-case-commons')
     implementation project(path: ':store:specification')
+    implementation project(path: ':commons')
+    implementation project(path: ':domain')
+
+    coreLibraryDesugaring libs.android.desugar
 
     implementation libs.kotlinx.coroutines.core
     implementation libs.javax.inject
+    implementation project(path: ':features:note-commons')
 
     // Tests
     testImplementation libs.junit

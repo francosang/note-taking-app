@@ -25,10 +25,10 @@ This approach has some draw backs, like making it difficult to mock the UseCases
 ### Modules
 - `app`
 - `features`
-    - `todo-list`
+    - `note-list`
         - `ui`
         - `use-case`
-    - `todo-detail`
+    - `note-detail`
         - `ui`
         - `use-case`
     - `ui-commons`

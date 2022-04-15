@@ -16,8 +16,13 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    compileOptions {
+        coreLibraryDesugaringEnabled true
+    }
 }
 
 dependencies {
     implementation project(path: ':domain')
+
+    coreLibraryDesugaring libs.android.desugar
 }

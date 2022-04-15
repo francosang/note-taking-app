@@ -1,18 +1,15 @@
 package com.task.noteapp.use_case
 
 import com.task.noteapp.commons.logger.Logger
+import com.task.noteapp.commons.test.NoteMocks
 import com.task.store.specification.NoteStore
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.mockk
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.TestCoroutineDispatcher
-import kotlinx.coroutines.test.resetMain
-import kotlinx.coroutines.test.setMain
-import org.junit.After
-import org.junit.Assert.assertEquals
-import org.junit.Before
+import org.junit.Assert.*
 import org.junit.Test
 
 @ExperimentalCoroutinesApi
@@ -23,44 +20,48 @@ class TestGetAllNotesUseCase {
     private val logger = mockk<Logger>()
     private val noteStore = mockk<NoteStore>()
 
-    private val useCase = GetAllNotesUseCase(
-        dispatcher = dispatcher,
-        logger = logger,
-        noteStore = noteStore,
-    )
-
-    @Before
-    fun before() {
-        Dispatchers.setMain(dispatcher)
-    }
-
-    @After
-    fun after() {
-        Dispatchers.resetMain()
-    }
-
     @Test
     fun `should return success result when store does not fail`() {
-        coEvery { noteStore.getNotes() } returns emptyList()
+        coEvery { noteStore.getNote(1) } returns NoteMocks.empty
+
+        val useCase = GetNoteUseCase(
+            dispatcher = dispatcher,
+            logger = logger,
+            noteStore = noteStore,
+        )
 
         val result = runBlocking {
-            useCase(Unit)
+            useCase(1)
         }
 
-        assertEquals(result.isSuccess, true)
-        assertEquals(result.getOrNull() != null, true)
+        assertTrue(result.isSuccess)
+        assertNotNull(result.getOrNull())
+        assertNull(result.exceptionOrNull())
+
+        coVerify(exactly = 1) { noteStore.getNote(1) }
+        coVerify(exactly = 0) { logger.e(t = any<Exception>()) }
     }
 
     @Test
     fun `should return error result when store fails`() {
-        coEvery { noteStore.getNotes() } throws Exception("I am failing")
-        coEvery { logger.e(t = any()) } returns Unit
+        coEvery { noteStore.getNote(1) } throws Exception("I am failing")
+        coEvery { logger.e(t = any<Exception>()) } returns Unit
+
+        val useCase = GetNoteUseCase(
+            dispatcher = dispatcher,
+            logger = logger,
+            noteStore = noteStore,
+        )
 
         val result = runBlocking {
-            useCase(Unit)
+            useCase(1)
         }
 
-        assertEquals(result.isFailure, true)
-        assertEquals(result.getOrNull() == null, true)
+        assertTrue(result.isFailure)
+        assertNull(result.getOrNull())
+        assertNotNull(result.exceptionOrNull())
+
+        coVerify(exactly = 1) { noteStore.getNote(1) }
+        coVerify(exactly = 1) { logger.e(t = any<Exception>()) }
     }
 }
