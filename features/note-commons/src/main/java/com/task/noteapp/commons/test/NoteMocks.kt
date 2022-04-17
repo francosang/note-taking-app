@@ -13,7 +13,7 @@ object NoteMocks {
         edited = null,
     )
 
-    val peristed = Note(
+    val persisted = Note(
         id = 1,
         title = "Persisted title",
         content = "Persisted content",

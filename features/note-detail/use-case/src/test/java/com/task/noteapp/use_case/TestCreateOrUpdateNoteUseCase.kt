@@ -2,15 +2,12 @@ package com.task.noteapp.use_case
 
 import com.task.noteapp.commons.logger.Logger
 import com.task.noteapp.commons.test.NoteMocks
-import com.task.noteapp.domain.Note
 import com.task.store.specification.NoteStore
 import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.TestCoroutineDispatcher
-import org.junit.After
 import org.junit.Assert.*
-import org.junit.Before
 import org.junit.Test
 
 @ExperimentalCoroutinesApi
@@ -137,7 +134,7 @@ class TestCreateOrUpdateNoteUseCase {
 
     @Test
     fun `CreateOrUpdateNote should retrieve persisted note if id param is received`() {
-        coEvery { noteStore.getNote(1) } returns NoteMocks.peristed
+        coEvery { noteStore.getNote(1) } returns NoteMocks.persisted
         coEvery { noteStore.save(any()) } answers { firstArg() }
         val useCase = CreateOrUpdateNoteUseCase(
             dispatcher = dispatcher,
