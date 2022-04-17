@@ -13,9 +13,8 @@ data class NoteParcelable(
     val content: String,
     val image: String? = null,
     val created: LocalDateTime,
-    val edited: LocalDateTime?  = null,
+    val edited: LocalDateTime? = null,
 ) : Parcelable
-
 
 fun List<Note>.toParcelables() = this.map { note ->
     NoteParcelable(

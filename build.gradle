@@ -13,10 +13,18 @@ buildscript {
 }
 
 allprojects {
-    apply from: "$rootDir/spotless.gradle"
     repositories {
         google()
         mavenCentral()
         maven { url "https://jitpack.io" }
+    }
+}
+
+subprojects {
+    apply from: "$rootDir/spotless.gradle"
+    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+        kotlinOptions {
+            freeCompilerArgs += "-opt-in=kotlin.RequiresOptIn"
+        }
     }
 }

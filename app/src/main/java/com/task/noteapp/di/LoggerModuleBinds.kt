@@ -16,8 +16,8 @@
 
 package com.task.noteapp.di
 
-import com.task.noteapp.logger.NoteAppLogger
 import com.task.noteapp.commons.logger.Logger
+import com.task.noteapp.logger.NoteAppLogger
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

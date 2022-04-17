@@ -16,7 +16,6 @@ data class NoteEntity(
     @ColumnInfo(name = "edited") val edited: LocalDateTime?,
 )
 
-
 fun List<NoteEntity>.toDomains() = this.map { it.toDomain() }
 fun NoteEntity.toDomain() = Note(
     id = this.id,
