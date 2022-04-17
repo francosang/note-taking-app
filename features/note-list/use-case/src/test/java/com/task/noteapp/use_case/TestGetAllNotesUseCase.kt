@@ -17,16 +17,16 @@ class TestGetAllNotesUseCase {
     private val logger = mockk<Logger>()
     private val noteStore = mockk<NoteStore>()
 
-    private val useCase = GetAllNotesUseCase(
-        logger = logger,
-        noteStore = noteStore,
-    )
-
     @Test
     fun `should return success result when store does not fail`() {
         coEvery { noteStore.observeNotes() } returns flow {
             emit(emptyList())
         }
+
+        val useCase = GetAllNotesUseCase(
+            logger = logger,
+            noteStore = noteStore,
+        )
 
         val result = runBlocking {
             useCase(Unit)
@@ -42,6 +42,11 @@ class TestGetAllNotesUseCase {
     fun `should return error result when store fails`() {
         coEvery { noteStore.observeNotes() } throws Exception("I am failing")
         coEvery { logger.e(t = any()) } returns Unit
+
+        val useCase = GetAllNotesUseCase(
+            logger = logger,
+            noteStore = noteStore,
+        )
 
         val result = runBlocking {
             useCase(Unit)

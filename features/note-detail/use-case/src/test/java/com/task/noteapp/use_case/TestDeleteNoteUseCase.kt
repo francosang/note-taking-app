@@ -1,19 +1,18 @@
 package com.task.noteapp.use_case
 
 import com.task.noteapp.commons.logger.Logger
-import com.task.noteapp.commons.test.NoteMocks
 import com.task.store.specification.NoteStore
-import io.mockk.coEvery
-import io.mockk.coVerify
-import io.mockk.mockk
+import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.TestCoroutineDispatcher
+import org.hamcrest.MatcherAssert
+import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Assert.*
 import org.junit.Test
 
 @ExperimentalCoroutinesApi
-class TestGetAllNotesUseCase {
+class TestDeleteNoteUseCase {
 
     private val dispatcher = TestCoroutineDispatcher()
 
@@ -21,10 +20,10 @@ class TestGetAllNotesUseCase {
     private val noteStore = mockk<NoteStore>()
 
     @Test
-    fun `should return success result when store does not fail`() {
-        coEvery { noteStore.getNote(1) } returns NoteMocks.empty
+    fun `DeleteNote should return success result when store does not fail`() {
+        coEvery { noteStore.deleteNote(1) } just runs
 
-        val useCase = GetNoteUseCase(
+        val useCase = DeleteNoteUseCase(
             dispatcher = dispatcher,
             logger = logger,
             noteStore = noteStore,
@@ -35,19 +34,19 @@ class TestGetAllNotesUseCase {
         }
 
         assertTrue(result.isSuccess)
-        assertNotNull(result.getOrNull())
+        assertEquals(result.getOrNull(), Unit)
         assertNull(result.exceptionOrNull())
 
-        coVerify(exactly = 1) { noteStore.getNote(1) }
+        coVerify(exactly = 1) { noteStore.deleteNote(1) }
         coVerify(exactly = 0) { logger.e(t = any<Exception>()) }
     }
 
     @Test
-    fun `should return error result when store fails`() {
-        coEvery { noteStore.getNote(1) } throws Exception("I am failing")
-        coEvery { logger.e(t = any<Exception>()) } returns Unit
+    fun `DeleteNote should return error result when store fails`() {
+        coEvery { noteStore.deleteNote(1) } throws Exception("I am failing")
+        coEvery { logger.e(t = any<Exception>()) } just runs
 
-        val useCase = GetNoteUseCase(
+        val useCase = DeleteNoteUseCase(
             dispatcher = dispatcher,
             logger = logger,
             noteStore = noteStore,
@@ -61,7 +60,8 @@ class TestGetAllNotesUseCase {
         assertNull(result.getOrNull())
         assertNotNull(result.exceptionOrNull())
 
-        coVerify(exactly = 1) { noteStore.getNote(1) }
+        coVerify(exactly = 1) { noteStore.deleteNote(1) }
         coVerify(exactly = 1) { logger.e(t = any<Exception>()) }
     }
 }
+
