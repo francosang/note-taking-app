@@ -1,5 +1,6 @@
 package com.task.noteapp.ui.fragment.notes
 
+import android.util.Log
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -11,6 +12,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -26,6 +28,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.task.noteapp.features.note_list.R
 import com.task.noteapp.parcelable.NoteParcelable
+import com.task.noteapp.ui.collectAsStateLifecycleAware
 import com.task.noteapp.ui.theme.NoteAppTheme
 import java.time.LocalDateTime
 
@@ -37,18 +40,20 @@ fun NotesScreen(
     onNoteTapped: (noteId: Int) -> Unit,
     onAddNote: () -> Unit
 ) {
-    val state = viewModel.state
-
+    val state by viewModel.state.collectAsStateLifecycleAware()
     when {
         state.isLoading -> {
+            Log.i("APP", "Loading")
             FullScreenLoading()
         }
         state.isError -> {
+            Log.i("APP", "Error")
             NotesError {
                 viewModel.retry()
             }
         }
         else -> {
+            Log.i("APP", "Success")
             NotesLoaded(
                 state = state,
                 onNoteTapped = onNoteTapped,

@@ -8,6 +8,7 @@ class NoteAppLogger @Inject constructor() : Logger {
 
     override fun init(debug: Boolean) {
         if (debug) {
+            Timber.tag("APP")
             Timber.plant(Timber.DebugTree())
         }
         // Timber.plant(CrashlyticsTree(firebaseCrashlytics))

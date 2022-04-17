@@ -5,11 +5,15 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.task.store.entity.NoteEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface NoteDao {
     @Query("SELECT * FROM note")
     suspend fun selectAll(): List<NoteEntity>
+
+    @Query("SELECT * FROM note")
+    fun observeAll(): Flow<List<NoteEntity>>
 
     @Query("SELECT * FROM note WHERE id = :id")
     suspend fun selectNote(id: Int): NoteEntity?

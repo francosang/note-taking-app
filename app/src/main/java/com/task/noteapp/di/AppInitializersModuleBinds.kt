@@ -17,18 +17,20 @@
 package com.task.noteapp.di
 
 import com.task.noteapp.appinitializers.AppInitializer
-import com.task.noteapp.appinitializers.TimberInitializer
+import com.task.noteapp.appinitializers.LoggerInitializer
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import dagger.multibindings.IntoSet
+import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module
 abstract class AppInitializersModuleBinds {
 
+    @Singleton
     @Binds
     @IntoSet
-    abstract fun bindTimberInitializer(bind: TimberInitializer): AppInitializer
+    abstract fun bindTimberInitializer(bind: LoggerInitializer): AppInitializer
 }

@@ -6,6 +6,8 @@ import com.task.store.entity.toDomain
 import com.task.store.entity.toDomains
 import com.task.store.entity.toEntity
 import com.task.store.specification.NoteStore
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class NoteStoreImpl @Inject constructor(
@@ -14,6 +16,12 @@ class NoteStoreImpl @Inject constructor(
 
     override suspend fun getNotes(): List<Note> {
         return noteDao.selectAll().toDomains()
+    }
+
+    override fun observeNotes(): Flow<List<Note>> {
+        return noteDao.observeAll().map {
+            it.toDomains()
+        }
     }
 
     override suspend fun save(note: Note): Note {

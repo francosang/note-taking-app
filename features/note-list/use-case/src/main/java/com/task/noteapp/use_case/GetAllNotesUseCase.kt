@@ -1,20 +1,20 @@
 package com.task.noteapp.use_case
 
-import com.task.noteapp.commons.di.IoDispatcher
 import com.task.noteapp.commons.logger.Logger
 import com.task.noteapp.domain.Note
-import com.task.noteapp.lib.UseCase
+import com.task.noteapp.lib.ObservableUseCase
 import com.task.store.specification.NoteStore
-import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class GetAllNotesUseCase @Inject constructor(
     private val noteStore: NoteStore,
-    @IoDispatcher dispatcher: CoroutineDispatcher,
     logger: Logger,
-) : UseCase<Unit, List<Note>>(dispatcher, logger) {
+) : ObservableUseCase<Unit, List<Note>>(logger) {
 
-    override suspend fun execute(params: Unit): List<Note> {
-         return noteStore.getNotes()
+    override fun createObservable(params: Unit): Flow<List<Note>> {
+        return noteStore.observeNotes()
     }
 }

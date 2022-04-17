@@ -5,7 +5,7 @@ import com.task.noteapp.commons.logger.Logger
 import com.task.noteapp.BuildConfig
 import javax.inject.Inject
 
-class TimberInitializer @Inject constructor(
+class LoggerInitializer @Inject constructor(
     private val logger: Logger
 ) : AppInitializer {
     override fun init(application: Application) {

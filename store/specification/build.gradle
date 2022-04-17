@@ -12,4 +12,6 @@ compileKotlin {
 
 dependencies {
     implementation project(path: ':domain')
+
+    implementation libs.kotlinx.coroutines.core
 }
