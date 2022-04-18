@@ -127,6 +127,18 @@ class NoteDetailsViewModel @Inject constructor(
     }
 
     private fun save(params: CreateOrUpdateNoteUseCase.Params) = viewModelScope.launch {
+        // TODO this needs to be improved
+        // Currently, the screen state will not update until
+        // the use case finishes persisting, this means
+        // the new typed text will not appear immediately
+        // in the input text.
+        // This could lead to unexpected behaviour, like missing some
+        // chars or the input carer appearing in prevous chars.
+        // Some possible fixes:
+        // - use a debouncer in the inputs to persist only when the user stops typing
+        // - add a button to persist only when the user presses it
+        // - launch a coroutine to async execute the uc and update the state immediately
+
         val result = createOrUpdateNoteUseCase(params)
 
         result.fold(
