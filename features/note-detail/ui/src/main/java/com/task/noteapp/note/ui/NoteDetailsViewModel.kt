@@ -1,5 +1,6 @@
 package com.task.noteapp.note.ui
 
+import android.net.Uri
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -52,6 +53,28 @@ class NoteDetailsViewModel @Inject constructor(
             note = note,
             title = state.title,
             image = state.image
+        )
+
+        save(params)
+    }
+
+    fun updateImage(uri: Uri) {
+        val params = CreateOrUpdateNoteUseCase.Params(
+            noteId = state.noteId,
+            note = state.note,
+            title = state.title,
+            image = uri.toString(),
+        )
+
+        save(params)
+    }
+
+    fun removeImage() {
+        val params = CreateOrUpdateNoteUseCase.Params(
+            noteId = state.noteId,
+            note = state.note,
+            title = state.title,
+            image = null,
         )
 
         save(params)

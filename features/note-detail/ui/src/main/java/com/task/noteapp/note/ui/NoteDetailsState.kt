@@ -16,9 +16,9 @@ data class NoteDetailsState(
 
     object Factory {
         val empty = NoteDetailsState(
-            title = "",
+            title = null,
             note = "",
-            image = "",
+            image = null,
             isClosing = false,
             isLoading = false,
             isError = false,

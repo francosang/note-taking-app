@@ -9,10 +9,10 @@
         android:name="com.task.noteapp.Application"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:theme="@style/Theme.AppCompat.NoActionBar"
-        android:supportsRtl="true">
-        <activity android:name="com.task.noteapp.ui.main.MainActivity"
-            android:windowSoftInputMode="adjustResize"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.AppCompat.NoActionBar">
+        <activity
+            android:name="com.task.noteapp.ui.main.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

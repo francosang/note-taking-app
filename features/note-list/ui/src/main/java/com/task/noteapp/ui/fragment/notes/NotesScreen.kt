@@ -1,5 +1,6 @@
 package com.task.noteapp.ui.fragment.notes
 
+import android.net.Uri
 import android.util.Log
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -40,6 +41,7 @@ import coil.compose.AsyncImage
 import com.task.noteapp.features.note_list.R
 import com.task.noteapp.parcelable.NoteParcelable
 import com.task.noteapp.ui.collectAsStateLifecycleAware
+import com.task.noteapp.ui.component.NoteImage
 import com.task.noteapp.ui.theme.NoteAppTheme
 import java.time.LocalDateTime
 
@@ -151,10 +153,10 @@ fun NoteItem(
             }
 
             if (note.image != null) {
-                AsyncImage(
+                NoteImage(
                     modifier = Modifier
                         .fillMaxWidth(),
-                    model = note.image,
+                    localUri = Uri.parse(note.image),
                     contentDescription = title,
                     contentScale = ContentScale.Crop,
                 )
