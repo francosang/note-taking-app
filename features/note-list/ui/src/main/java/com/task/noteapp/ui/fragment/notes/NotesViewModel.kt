@@ -3,14 +3,13 @@ package com.task.noteapp.ui.fragment.notes
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.task.noteapp.parcelable.toParcelables
 import com.task.noteapp.use_case.GetAllNotesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import javax.inject.Inject
 
 @HiltViewModel
 class NotesViewModel @Inject constructor(
@@ -18,13 +17,11 @@ class NotesViewModel @Inject constructor(
 ) : ViewModel() {
 
     val state: StateFlow<NotesScreenState> = getAllNotesUseCase.flow.map { notes ->
-        Log.i("APP", "Mapping notes: notes")
-
         notes.fold(
             onSuccess = {
                 NotesScreenState(
                     isLoading = false,
-                    notes = it.toParcelables(),
+                    notes = it,
                     isError = false,
                 )
             },

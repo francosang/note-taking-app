@@ -33,8 +33,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.task.noteapp.domain.Note
 import com.task.noteapp.features.note_list.R
-import com.task.noteapp.parcelable.NoteParcelable
 import com.task.noteapp.ui.collectAsStateLifecycleAware
 import com.task.noteapp.ui.component.NoteImage
 import com.task.noteapp.ui.theme.CardCorner
@@ -93,7 +93,7 @@ fun NotesLoaded(
 
 @Composable
 fun NotesList(
-    notes: List<NoteParcelable>,
+    notes: List<Note>,
     onNoteTapped: (noteId: Int) -> Unit,
 ) {
     LazyColumn(
@@ -112,7 +112,7 @@ fun NotesList(
 
 @Composable
 fun NoteItem(
-    note: NoteParcelable,
+    note: Note,
     onNoteTapped: (noteId: Int) -> Unit,
 ) {
     val title = note.title
@@ -126,7 +126,7 @@ fun NoteItem(
     ) {
         Column(
             modifier = Modifier.clickable {
-                onNoteTapped(note.id)
+                note.id?.let(onNoteTapped)
             },
         ) {
             var noteTopPadding = 20.dp
@@ -233,37 +233,47 @@ fun NotesListFilled() {
             isLoading = false,
             isError = false,
             notes = listOf(
-                NoteParcelable(
+                Note(
                     id = 1,
                     title = "Title and text",
                     content = "Lorem Ipsum lol lol lol Lorem Ipsum lol lol lol Lorem Ipsum lol lol lol Lorem Ipsum lol lol lol",
                     created = LocalDateTime.now(),
+                    edited = null,
+                    image = null,
                 ),
-                NoteParcelable(
+                Note(
                     id = 2,
+                    title = null,
                     content = "Only content",
                     created = LocalDateTime.now(),
+                    edited = null,
+                    image = null,
                 ),
-                NoteParcelable(
+                Note(
                     id = 3,
+                    title = null,
                     image = "https://via.placeholder.com/728x900.png",
                     content = "No title and image",
                     created = LocalDateTime.now(),
+                    edited = null,
                 ),
-                NoteParcelable(
+                Note(
                     id = 4,
                     title = "Title content and image",
                     image = "https://via.placeholder.com/728x90.png",
                     content = "Lorem Ipsum 2",
                     created = LocalDateTime.now(),
+                    edited = null,
                 ),
-                NoteParcelable(
+                Note(
                     id = 5,
                     title = "Title content and image",
                     image = "https://via.placeholder.com/90x90.png",
                     content = "Lorem Ipsum 2",
                     created = LocalDateTime.now(),
-                ),
+                    edited = null,
+
+                    ),
             ),
         ),
         onAddNote = {},

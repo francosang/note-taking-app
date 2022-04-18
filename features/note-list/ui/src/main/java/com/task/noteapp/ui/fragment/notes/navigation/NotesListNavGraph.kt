@@ -11,7 +11,6 @@ fun NavGraphBuilder.noteListNavGraphRoute(
     onAddNote: () -> Unit,
 ) {
     composable(route = NotesListDestination.route) {
-        // TODO: add navigation
         NotesScreen(
             onNoteTapped = onNoteTapped,
             onAddNote = onAddNote,
