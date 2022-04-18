@@ -134,7 +134,7 @@ class TestCreateOrUpdateNoteUseCase {
 
     @Test
     fun `CreateOrUpdateNote should retrieve persisted note if id param is received`() {
-        coEvery { noteStore.getNote(1) } returns NoteMocks.persisted
+        coEvery { noteStore.getNote(1) } returns NoteMocks.persistedWithTitle
         coEvery { noteStore.save(any()) } answers { firstArg() }
         val useCase = CreateOrUpdateNoteUseCase(
             dispatcher = dispatcher,
@@ -164,27 +164,63 @@ class TestCreateOrUpdateNoteUseCase {
         coVerify(exactly = 0) { logger.e(t = any<Exception>()) }
     }
 
-//    @Test
-//    fun `should return error result when store fails`() {
-//        coEvery { noteStore.deleteNote(1) } throws Exception("I am failing")
-//        coEvery { logger.e(t = any<Exception>()) } just runs
-//
-//        val useCase = CreateOrUpdateNoteUseCase(
-//            dispatcher = dispatcher,
-//            logger = logger,
-//            noteStore = noteStore,
-//        )
-//
-//        val result = runBlocking {
-//            useCase(1)
-//        }
-//
-//        assertTrue(result.isFailure)
-//        assertNull(result.getOrNull())
-//        assertNotNull(result.exceptionOrNull())
-//
-//        coVerify(exactly = 1) { noteStore.deleteNote(1) }
-//        coVerify(exactly = 1) { logger.e(t = any<Exception>()) }
-//    }
+    @Test
+    fun `CreateOrUpdateNote should return save empty note if it has id`() {
+        coEvery { noteStore.getNote(1) } returns NoteMocks.persistedWithTitleAndImage
+        coEvery { noteStore.save(any()) } answers { firstArg() }
+
+        val useCase = CreateOrUpdateNoteUseCase(
+            dispatcher = dispatcher,
+            logger = logger,
+            noteStore = noteStore,
+        )
+
+        val result = runBlocking {
+            useCase(CreateOrUpdateNoteUseCase.Params(
+                noteId = 1,
+                note = "", // empty note with id
+                title = null,
+                image = null,
+            ))
+        }
+
+        assertTrue(result.isSuccess)
+        assertNotNull(result.getOrNull())
+        assertEquals(result.getOrNull()?.id, 1)
+        assertEquals(result.getOrNull()?.title, null)
+        assertEquals(result.getOrNull()?.content, "")
+        assertEquals(result.getOrNull()?.image, null)
+
+        coVerify(exactly = 1) { noteStore.getNote(any()) }
+        coVerify(exactly = 1) { noteStore.save(any()) }
+        coVerify(exactly = 0) { logger.e(t = any<Exception>()) }
+    }
+
+    @Test
+    fun `CreateOrUpdateNote should return error result when store fails`() {
+        coEvery { noteStore.deleteNote(1) } throws Exception("I am failing")
+        coEvery { logger.e(t = any<Exception>()) } just runs
+
+        val useCase = CreateOrUpdateNoteUseCase(
+            dispatcher = dispatcher,
+            logger = logger,
+            noteStore = noteStore,
+        )
+
+        val result = runBlocking {
+            useCase(CreateOrUpdateNoteUseCase.Params(
+                noteId = 1,
+                note = "New note",
+                title = null,
+                image = null,
+            ))
+        }
+
+        assertTrue(result.isFailure)
+        assertNull(result.getOrNull())
+        assertNotNull(result.exceptionOrNull())
+
+        coVerify(exactly = 1) { logger.e(t = any<Exception>()) }
+    }
 }
 
