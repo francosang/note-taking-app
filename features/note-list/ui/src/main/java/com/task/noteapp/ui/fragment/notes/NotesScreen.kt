@@ -1,20 +1,16 @@
 package com.task.noteapp.ui.fragment.notes
 
 import android.net.Uri
-import android.util.Log
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CornerSize
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.FloatingActionButton
@@ -37,15 +33,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import coil.compose.AsyncImage
 import com.task.noteapp.features.note_list.R
 import com.task.noteapp.parcelable.NoteParcelable
 import com.task.noteapp.ui.collectAsStateLifecycleAware
 import com.task.noteapp.ui.component.NoteImage
+import com.task.noteapp.ui.theme.CardCorner
 import com.task.noteapp.ui.theme.NoteAppTheme
 import java.time.LocalDateTime
-
-val CardCorner = RoundedCornerShape(CornerSize(10.dp))
 
 @Composable
 fun NotesScreen(
@@ -56,17 +50,14 @@ fun NotesScreen(
     val state by viewModel.state.collectAsStateLifecycleAware()
     when {
         state.isLoading -> {
-            Log.i("APP", "Loading")
             FullScreenLoading()
         }
         state.isError -> {
-            Log.i("APP", "Error")
             NotesError {
                 viewModel.retry()
             }
         }
         else -> {
-            Log.i("APP", "Success")
             NotesLoaded(
                 state = state,
                 onNoteTapped = onNoteTapped,
@@ -106,7 +97,9 @@ fun NotesList(
     onNoteTapped: (noteId: Int) -> Unit,
 ) {
     LazyColumn(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .padding(bottom = 20.dp)
+            .fillMaxSize(),
     ) {
         items(notes) { item ->
             NoteItem(
@@ -125,7 +118,8 @@ fun NoteItem(
     val title = note.title
     Box(
         modifier = Modifier
-            .padding(20.dp)
+            .padding(horizontal = 20.dp)
+            .padding(top = 20.dp)
             .fillMaxWidth()
             .clip(CardCorner)
             .border(1.dp, Color.Gray, CardCorner)
@@ -135,21 +129,20 @@ fun NoteItem(
                 onNoteTapped(note.id)
             },
         ) {
+            var noteTopPadding = 20.dp
             if (title != null) {
                 Text(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 20.dp)
-                        .padding(top = 20.dp),
+                        .padding(top = 20.dp, bottom = 20.dp),
                     text = title,
                     fontSize = 18.sp,
                     maxLines = 1,
                     fontWeight = FontWeight.ExtraBold,
                 )
-            }
 
-            if (note.image != null && title != null) {
-                Box(modifier = Modifier.height(20.dp))
+                noteTopPadding = 0.dp
             }
 
             if (note.image != null) {
@@ -160,18 +153,22 @@ fun NoteItem(
                     contentDescription = title,
                     contentScale = ContentScale.Crop,
                 )
+
+                noteTopPadding = 20.dp
             }
 
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 20.dp)
-                    .padding(bottom = 20.dp, top = 20.dp),
-                text = note.content,
-                fontSize = 16.sp,
-                maxLines = 2,
-                fontWeight = FontWeight.Normal,
-            )
+            if (note.content.isNotBlank()) {
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 20.dp)
+                        .padding(bottom = 20.dp, top = noteTopPadding),
+                    text = note.content,
+                    fontSize = 16.sp,
+                    maxLines = 2,
+                    fontWeight = FontWeight.Normal,
+                )
+            }
         }
     }
 }
