@@ -33,8 +33,11 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Image
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -118,6 +121,7 @@ fun NoteScaffold(
     ) { padding ->
         Box(Modifier.padding(padding)) {
             NoteForm(
+                id = id,
                 title = title,
                 note = note,
                 image = image,
@@ -131,6 +135,7 @@ fun NoteScaffold(
 
 @Composable
 fun NoteForm(
+    id: Int?,
     title: String?,
     note: String,
     image: String?,
@@ -138,6 +143,14 @@ fun NoteForm(
     onNoteChange: (String) -> Unit,
     onImageRemoved: () -> Unit,
 ) {
+    val focusRequester = remember { FocusRequester() }
+
+    if (id == null) {
+        LaunchedEffect(Unit) {
+            focusRequester.requestFocus()
+        }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -189,6 +202,7 @@ fun NoteForm(
             onValueChange = onNoteChange,
             placeholder = "Note",
             modifier = Modifier
+                .focusRequester(focusRequester)
                 .fillMaxSize(),
         )
     }
