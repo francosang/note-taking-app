@@ -88,6 +88,7 @@ The generated debug apk should be ready to install and use.
 ## TODO and Fixes
 
 - Improve `note-detail` to be more performant when saving a note. Read `NoteDetailsViewModel.save()` comments.
+- Discard empty notes automatically.
 - Logger is missing the line number
 - Create a wiring module for DI, so not all modules are needed in `:android:app`
 - Release configuration for apk singing, etc

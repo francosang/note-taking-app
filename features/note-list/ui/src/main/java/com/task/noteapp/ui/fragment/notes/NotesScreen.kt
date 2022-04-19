@@ -124,6 +124,11 @@ fun NoteItem(
             .fillMaxWidth()
             .clip(CardCorner)
             .border(1.dp, Color.Gray, CardCorner)
+            .clickable {
+                note.id?.let {
+                    onNoteTapped(it)
+                }
+            }
     ) {
         DateLabel(
             modifier = Modifier
@@ -134,13 +139,7 @@ fun NoteItem(
             fontSize = 10.sp,
         )
 
-        Column(
-            modifier = Modifier.clickable {
-                note.id?.let {
-                    onNoteTapped(it)
-                }
-            },
-        ) {
+        Column {
             var noteTopPadding = 20.dp
             if (title != null) {
                 Text(
@@ -285,7 +284,7 @@ fun NotesListFilled() {
                     created = LocalDateTime.now(),
                     edited = null,
 
-                ),
+                    ),
             ),
         ),
         onAddNote = {},
