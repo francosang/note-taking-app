@@ -5,7 +5,10 @@ import java.time.LocalDateTime
 data class NoteDetailsState(
     val isClosing: Boolean,
     val isLoading: Boolean,
-    val isError: Boolean,
+    val hasErrorLoading: Boolean,
+    val hasErrorDeleting: Boolean,
+    val hasErrorSaving: Boolean,
+    val isEditing: Boolean,
     val noteId: Int?,
     val title: String?,
     val note: String,
@@ -21,8 +24,11 @@ data class NoteDetailsState(
             image = null,
             isClosing = false,
             isLoading = false,
-            isError = false,
+            hasErrorLoading = false,
+            hasErrorSaving = false,
+            hasErrorDeleting = false,
             noteId = null,
+            isEditing = false,
         )
     }
 }

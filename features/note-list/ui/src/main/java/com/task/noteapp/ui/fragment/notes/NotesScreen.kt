@@ -135,7 +135,9 @@ fun NoteItem(
 
         Column(
             modifier = Modifier.clickable {
-                note.id?.let(onNoteTapped)
+                note.id?.let {
+                    onNoteTapped(it)
+                }
             },
         ) {
             var noteTopPadding = 20.dp

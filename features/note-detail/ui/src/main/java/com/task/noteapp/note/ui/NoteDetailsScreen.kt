@@ -31,6 +31,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Image
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -74,6 +75,7 @@ fun NoteDetailsScreen(
                 title = state.title,
                 note = state.note,
                 image = state.image,
+                hasErrorSaving = state.hasErrorSaving,
                 editedDate = state.edited,
                 createdDate = state.created,
                 onImagePicked = detailsViewModel::updateImage,
@@ -93,6 +95,7 @@ fun NoteScaffold(
     title: String?,
     note: String,
     image: String?,
+    hasErrorSaving: Boolean,
     createdDate: LocalDateTime?,
     editedDate: LocalDateTime?,
     onTitleChange: (String) -> Unit,
@@ -102,7 +105,16 @@ fun NoteScaffold(
     onDelete: () -> Unit,
     onExit: () -> Unit,
 ) {
+    val state = rememberScaffoldState()
+
+    LaunchedEffect(key1 = hasErrorSaving) {
+        if (hasErrorSaving) {
+            state.snackbarHostState.showSnackbar("Ups, there was an error saving your note")
+        }
+    }
+
     Scaffold(
+        scaffoldState = state,
         topBar = {
             NoteTopBar(onExit = onExit)
         },

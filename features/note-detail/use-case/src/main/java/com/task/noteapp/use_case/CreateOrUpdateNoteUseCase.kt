@@ -20,6 +20,7 @@ class CreateOrUpdateNoteUseCase @Inject constructor(
         val note: String,
         val title: String?,
         val image: String?,
+        val editing: Boolean,
     )
 
     override suspend fun execute(params: Params): Note? {
@@ -39,7 +40,7 @@ class CreateOrUpdateNoteUseCase @Inject constructor(
                 title = params.title,
                 content = params.note,
                 image = params.image,
-                edited = LocalDateTime.now(),
+                edited = if (params.editing) LocalDateTime.now() else null,
             )
         } ?: run {
             Note(

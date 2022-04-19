@@ -7,7 +7,6 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.task.noteapp.commons.logger.Logger
 import com.task.noteapp.note.navigation.NoteArgument
 import com.task.noteapp.use_case.CreateOrUpdateNoteUseCase
 import com.task.noteapp.use_case.DeleteNoteUseCase
@@ -18,7 +17,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NoteDetailsViewModel @Inject constructor(
-    private val logger: Logger,
     private val createOrUpdateNoteUseCase: CreateOrUpdateNoteUseCase,
     private val getNoteUseCase: GetNoteUseCase,
     private val deleteNoteUseCase: DeleteNoteUseCase,
@@ -41,7 +39,8 @@ class NoteDetailsViewModel @Inject constructor(
             noteId = state.noteId,
             note = state.note,
             title = title,
-            image = state.image
+            image = state.image,
+            editing = state.isEditing,
         )
 
         save(params)
@@ -52,6 +51,7 @@ class NoteDetailsViewModel @Inject constructor(
             noteId = state.noteId,
             note = note,
             title = state.title,
+            editing = state.isEditing,
             image = state.image
         )
 
@@ -63,6 +63,7 @@ class NoteDetailsViewModel @Inject constructor(
             noteId = state.noteId,
             note = state.note,
             title = state.title,
+            editing = state.isEditing,
             image = uri.toString(),
         )
 
@@ -74,6 +75,7 @@ class NoteDetailsViewModel @Inject constructor(
             noteId = state.noteId,
             note = state.note,
             title = state.title,
+            editing = state.isEditing,
             image = null,
         )
 
@@ -90,7 +92,7 @@ class NoteDetailsViewModel @Inject constructor(
                 state = state.copy(isClosing = true)
             },
             onFailure = {
-                state = state.copy(isError = true)
+                state = state.copy(hasErrorDeleting = true)
             }
         )
     }
@@ -114,19 +116,21 @@ class NoteDetailsViewModel @Inject constructor(
                         image = note.image,
                         created = note.created,
                         edited = note.edited,
+                        isEditing = true,
                     )
                 }
             }
             result.onFailure {
                 state = state.copy(
+                    isEditing = true,
                     isLoading = false,
-                    isError = true
+                    hasErrorLoading = true
                 )
             }
         }
     }
 
-    private fun save(params: CreateOrUpdateNoteUseCase.Params) = viewModelScope.launch {
+    private fun save(params: CreateOrUpdateNoteUseCase.Params) {
         // TODO this needs to be improved
         // Currently, the screen state will not update until
         // the use case finishes persisting, this means
@@ -135,32 +139,60 @@ class NoteDetailsViewModel @Inject constructor(
         // This could lead to unexpected behaviour, like missing some
         // chars or the input carer appearing in prevous chars.
         // Some possible fixes:
-        // - use a debouncer in the inputs to persist only when the user stops typing
-        // - add a button to persist only when the user presses it
-        // - launch a coroutine to async execute the uc and update the state immediately
+        // 1. use a debouncer in the inputs to persist only when the user stops typing
+        // 2. add a button to persist only when the user presses it
+        // 3. launch a coroutine to async execute the uc and update the state immediately
+        // This is something I would like to discuss with a team.
 
-        val result = createOrUpdateNoteUseCase(params)
+//        val result = createOrUpdateNoteUseCase(params)
+//
+//        result.fold(
+//            onFailure = {
+//                logger.e(it)
+//                state = state.copy(
+//                    isError = true,
+//                )
+//            },
+//            onSuccess = { note ->
+//                note?.let {
+//                    state = state.copy(
+//                        isError = false,
+//                        noteId = it.id,
+//                        note = it.content,
+//                        title = it.title,
+//                        image = it.image,
+//                        created = it.created,
+//                        edited = it.edited,
+//                    )
+//                }
+//            }
+//        )
 
-        result.fold(
-            onFailure = {
-                logger.e(it)
-                state = state.copy(
-                    isError = true,
-                )
-            },
-            onSuccess = { note ->
-                note?.let {
+        // This is a solution to the saving problem using approach 3.
+        // But still needs a debouncer to optimize number of writes
+        viewModelScope.launch {
+            val result = createOrUpdateNoteUseCase(params)
+            result.onSuccess {
+                it?.let { note ->
                     state = state.copy(
-                        isError = false,
-                        noteId = it.id,
-                        note = it.content,
-                        title = it.title,
-                        image = it.image,
-                        created = it.created,
-                        edited = it.edited,
+                        hasErrorSaving = false,
+                        noteId = note.id
                     )
                 }
             }
+            result.onFailure {
+                state = state.copy(
+                    hasErrorSaving = true
+                )
+            }
+        }
+
+        state = state.copy(
+            hasErrorLoading = false,
+            noteId = params.noteId,
+            note = params.note,
+            title = params.title,
+            image = params.image,
         )
     }
 }
