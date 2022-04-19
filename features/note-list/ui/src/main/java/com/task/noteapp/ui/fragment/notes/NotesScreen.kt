@@ -127,10 +127,11 @@ fun NoteItem(
     ) {
         DateLabel(
             modifier = Modifier
-                .padding(20.dp)
+                .padding(6.dp)
                 .align(Alignment.TopEnd),
             edited = note.edited,
             created = note.created,
+            fontSize = 10.sp,
         )
 
         Column(
