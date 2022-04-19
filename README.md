@@ -87,14 +87,13 @@ The generated debug apk should be ready to install and use.
 
 ## TODO and Fixes
 
-- Improve `note-detail` to be more performant when saving a note.
+- Improve `note-detail` to be more performant when saving a note. Read `NoteDetailsViewModel.save()` comments.
 - Logger is missing the line number
 - Create a wiring module for DI, so not all modules are needed in `:android:app`
 - Release configuration for apk singing, etc
 - Implement tests for the view models.
 - Implement tests for the ui.
 - Implement espresso tests.
-- After writing the first character, the note is shown as edited instead of created 
 - Note screen has a problem with the scrolling and the enter transition animation
 - Maybe create a base class for ViewModels.
 
