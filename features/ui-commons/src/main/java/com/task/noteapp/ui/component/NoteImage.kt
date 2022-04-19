@@ -35,4 +35,3 @@ fun NoteImage(
         contentScale = contentScale,
     )
 }
-

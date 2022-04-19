@@ -19,8 +19,8 @@ class OpenDocumentWithPersistablePermission :
             .addCategory(Intent.CATEGORY_OPENABLE)
             .setFlags(
                 Intent.FLAG_GRANT_READ_URI_PERMISSION
-                        or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-                        or Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION
+                    or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                    or Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION
             )
             .setType(input)
     }

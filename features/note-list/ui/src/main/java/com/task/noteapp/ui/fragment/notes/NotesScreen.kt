@@ -282,7 +282,7 @@ fun NotesListFilled() {
                     created = LocalDateTime.now(),
                     edited = null,
 
-                    ),
+                ),
             ),
         ),
         onAddNote = {},

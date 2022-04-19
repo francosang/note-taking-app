@@ -3,11 +3,9 @@ package com.task.noteapp.use_case
 import com.task.noteapp.commons.logger.Logger
 import com.task.noteapp.commons.test.NoteMocks
 import com.task.store.specification.NoteStore
-import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.TestCoroutineDispatcher
-import org.junit.Assert.*
 import org.junit.Test
 
 @ExperimentalCoroutinesApi
@@ -176,12 +174,14 @@ class TestCreateOrUpdateNoteUseCase {
         )
 
         val result = runBlocking {
-            useCase(CreateOrUpdateNoteUseCase.Params(
-                noteId = 1,
-                note = "", // empty note with id
-                title = null,
-                image = null,
-            ))
+            useCase(
+                CreateOrUpdateNoteUseCase.Params(
+                    noteId = 1,
+                    note = "", // empty note with id
+                    title = null,
+                    image = null,
+                )
+            )
         }
 
         assertTrue(result.isSuccess)
@@ -208,12 +208,14 @@ class TestCreateOrUpdateNoteUseCase {
         )
 
         val result = runBlocking {
-            useCase(CreateOrUpdateNoteUseCase.Params(
-                noteId = 1,
-                note = "New note",
-                title = null,
-                image = null,
-            ))
+            useCase(
+                CreateOrUpdateNoteUseCase.Params(
+                    noteId = 1,
+                    note = "New note",
+                    title = null,
+                    image = null,
+                )
+            )
         }
 
         assertTrue(result.isFailure)
@@ -223,4 +225,3 @@ class TestCreateOrUpdateNoteUseCase {
         coVerify(exactly = 1) { logger.e(t = any<Exception>()) }
     }
 }
-

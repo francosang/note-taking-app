@@ -2,13 +2,18 @@ package com.task.noteapp.use_case
 
 import com.task.noteapp.commons.logger.Logger
 import com.task.store.specification.NoteStore
-import io.mockk.*
+import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.just
+import io.mockk.mockk
+import io.mockk.runs
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.TestCoroutineDispatcher
-import org.hamcrest.MatcherAssert
-import org.hamcrest.MatcherAssert.assertThat
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 @ExperimentalCoroutinesApi
@@ -64,4 +69,3 @@ class TestDeleteNoteUseCase {
         coVerify(exactly = 1) { logger.e(t = any<Exception>()) }
     }
 }
-

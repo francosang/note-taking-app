@@ -3,7 +3,11 @@ package com.task.noteapp.use_case
 import com.task.noteapp.commons.logger.Logger
 import com.task.noteapp.commons.test.NoteMocks
 import com.task.store.specification.NoteStore
-import io.mockk.*
+import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.just
+import io.mockk.mockk
+import io.mockk.runs
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.TestCoroutineDispatcher

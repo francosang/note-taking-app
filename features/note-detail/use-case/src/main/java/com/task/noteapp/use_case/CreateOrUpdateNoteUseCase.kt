@@ -23,9 +23,11 @@ class CreateOrUpdateNoteUseCase @Inject constructor(
     )
 
     override suspend fun execute(params: Params): Note? {
-        if ((params.note.trim().isEmpty() &&
-                    params.title?.trim().isNullOrBlank() &&
-                    params.image?.trim().isNullOrBlank()) &&
+        if ((
+            params.note.trim().isEmpty() &&
+                params.title?.trim().isNullOrBlank() &&
+                params.image?.trim().isNullOrBlank()
+            ) &&
             params.noteId == null
         ) {
             logger.i("Nothing in the note to save")
