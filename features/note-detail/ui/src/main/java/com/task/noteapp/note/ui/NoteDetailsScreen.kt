@@ -42,7 +42,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
@@ -50,12 +49,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.task.noteapp.note.result.contrat.OpenDocumentWithPersistablePermission
+import com.task.noteapp.ui.component.DateLabel
 import com.task.noteapp.ui.component.NoteImage
 import com.task.noteapp.ui.theme.NoteAppTheme
 import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-
-private val Formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
 
 @Composable
 fun NoteDetailsScreen(
@@ -244,21 +241,6 @@ fun NoteField(
 }
 
 @Composable
-private fun DateLabel(
-    text: String,
-    modifier: Modifier = Modifier,
-) {
-    Text(
-        modifier = modifier,
-        text = text,
-        style = LocalTextStyle.current.copy(
-            fontStyle = FontStyle.Italic,
-            fontSize = 12.sp,
-        )
-    )
-}
-
-@Composable
 private fun NoteTopBar(
     onExit: () -> Unit
 ) {
@@ -327,17 +309,11 @@ private fun NoteBottomBar(
                 }
             }
 
-            if (editedDate != null) {
-                DateLabel(
-                    modifier = Modifier.align(Alignment.Center),
-                    text = "Edited ${editedDate.format(Formatter)}",
-                )
-            } else if (createdDate != null) {
-                DateLabel(
-                    modifier = Modifier.align(Alignment.Center),
-                    text = "Created ${createdDate.format(Formatter)}",
-                )
-            }
+            DateLabel(
+                modifier = Modifier.align(Alignment.Center),
+                edited = editedDate,
+                created = createdDate,
+            )
 
             IconButton(
                 modifier = Modifier.align(Alignment.CenterEnd),

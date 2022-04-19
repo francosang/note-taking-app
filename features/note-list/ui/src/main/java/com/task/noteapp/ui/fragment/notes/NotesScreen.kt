@@ -36,6 +36,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.task.noteapp.domain.Note
 import com.task.noteapp.features.note_list.R
 import com.task.noteapp.ui.collectAsStateLifecycleAware
+import com.task.noteapp.ui.component.DateLabel
 import com.task.noteapp.ui.component.NoteImage
 import com.task.noteapp.ui.theme.CardCorner
 import com.task.noteapp.ui.theme.NoteAppTheme
@@ -124,6 +125,14 @@ fun NoteItem(
             .clip(CardCorner)
             .border(1.dp, Color.Gray, CardCorner)
     ) {
+        DateLabel(
+            modifier = Modifier
+                .padding(20.dp)
+                .align(Alignment.TopEnd),
+            edited = note.edited,
+            created = note.created,
+        )
+
         Column(
             modifier = Modifier.clickable {
                 note.id?.let(onNoteTapped)

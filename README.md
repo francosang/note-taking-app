@@ -94,6 +94,8 @@ The generated debug apk should be ready to install and use.
 - Implement tests for the view models.
 - Implement tests for the ui.
 - Implement espresso tests.
+- After writing the first character, the note is shown as edited instead of created 
+- Note screen has a problem with the scrolling and the enter transition animation
 - Maybe create a base class for ViewModels.
 
 ### Deadline

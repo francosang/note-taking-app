@@ -13,6 +13,7 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
         kotlinOptions.moduleName = "com.task.noteapp.features.note_list.ui"
+        coreLibraryDesugaringEnabled true
     }
     kotlinOptions {
         jvmTarget = '1.8'
@@ -22,9 +23,6 @@ android {
     }
     composeOptions {
         kotlinCompilerExtensionVersion '1.1.1'
-    }
-    compileOptions {
-        coreLibraryDesugaringEnabled true
     }
 }
 

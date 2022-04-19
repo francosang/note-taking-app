@@ -10,12 +10,10 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
         kotlinOptions.moduleName = "com.task.noteapp.features.note_details.use_case"
+        coreLibraryDesugaringEnabled true
     }
     kotlinOptions {
         jvmTarget = '1.8'
-    }
-    compileOptions {
-        coreLibraryDesugaringEnabled true
     }
 }
 
