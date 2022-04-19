@@ -91,7 +91,9 @@ The generated debug apk should be ready to install and use.
 - Logger is missing the line number
 - Create a wiring module for DI, so not all modules are needed in `:android:app`
 - Release configuration for apk singing, etc
-- Implement more testing, and increase coverage.
+- Implement tests for the view models.
+- Implement tests for the ui.
+- Implement espresso tests.
 - Maybe create a base class for ViewModels.
 
 ### Deadline
